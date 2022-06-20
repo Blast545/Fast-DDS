@@ -773,7 +773,8 @@ bool DataReaderHistory::update_instance_nts(
     vit = instances_.find(change->instanceHandle);
 
     assert(vit != instances_.end());
-    bool ret = vit->second.update_state(change->kind, change->writerGUID);
+    bool ret =
+            vit->second.update_state(change->kind, change->writerGUID, change->reader_info.writer_ownership_strength);
     change->reader_info.disposed_generation_count = vit->second.disposed_generation_count;
     change->reader_info.no_writers_generation_count = vit->second.no_writers_generation_count;
 
