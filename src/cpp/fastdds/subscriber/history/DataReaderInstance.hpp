@@ -130,6 +130,28 @@ struct DataReaderInstance
         return writer_unregister(writer_guid);
     }
 
+    void deadline_missed()
+    {
+        if (fastrtps::rtps::c_Guid_Unknown != current_owner.first)
+        {
+            if (alive_writers.remove_if([&](const WriterOwnership& item)
+                    {
+                        return item.first == current_owner.first;
+                    }))
+            {
+
+                current_owner.second = 0;
+                current_owner.first = fastrtps::rtps::c_Guid_Unknown;
+                update_owner();
+
+                if (alive_writers.empty() && (InstanceStateKind::ALIVE_INSTANCE_STATE == instance_state))
+                {
+                    instance_state = InstanceStateKind::NOT_ALIVE_NO_WRITERS_INSTANCE_STATE;
+                }
+            }
+        }
+    }
+
 private:
 
     bool writer_alive(
