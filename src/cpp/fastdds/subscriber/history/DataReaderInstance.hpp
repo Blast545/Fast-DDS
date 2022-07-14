@@ -184,20 +184,23 @@ private:
             ret_val = true;
         }
 
-        if (InstanceStateKind::NOT_ALIVE_DISPOSED_INSTANCE_STATE == instance_state)
+        if (ret_val)
         {
-            ++disposed_generation_count;
-            alive_writers.clear();
-            view_state = ViewStateKind::NEW_VIEW_STATE;
-        }
-        else if (InstanceStateKind::NOT_ALIVE_NO_WRITERS_INSTANCE_STATE == instance_state)
-        {
-            ++no_writers_generation_count;
-            assert(0 == alive_writers.size());
-            view_state = ViewStateKind::NEW_VIEW_STATE;
-        }
+            if (InstanceStateKind::NOT_ALIVE_DISPOSED_INSTANCE_STATE == instance_state)
+            {
+                ++disposed_generation_count;
+                alive_writers.clear();
+                view_state = ViewStateKind::NEW_VIEW_STATE;
+            }
+            else if (InstanceStateKind::NOT_ALIVE_NO_WRITERS_INSTANCE_STATE == instance_state)
+            {
+                ++no_writers_generation_count;
+                assert(0 == alive_writers.size());
+                view_state = ViewStateKind::NEW_VIEW_STATE;
+            }
 
-        instance_state = InstanceStateKind::ALIVE_INSTANCE_STATE;
+            instance_state = InstanceStateKind::ALIVE_INSTANCE_STATE;
+        }
 
         writer_set(writer_guid, ownership_strength);
 
@@ -210,7 +213,6 @@ private:
     {
         bool ret_val = false;
 
-        writer_set(writer_guid, ownership_strength);
         if (ownership_strength >= current_owner.second)
         {
             current_owner.first = writer_guid;
@@ -222,6 +224,8 @@ private:
                 instance_state = InstanceStateKind::NOT_ALIVE_DISPOSED_INSTANCE_STATE;
             }
         }
+
+        writer_set(writer_guid, ownership_strength);
 
         return ret_val;
     }
