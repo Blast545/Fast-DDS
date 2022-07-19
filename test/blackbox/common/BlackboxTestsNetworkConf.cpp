@@ -183,7 +183,9 @@ TEST_P(NetworkConfig, PubSubOutLocatorSelection)
     reader.reliability(eprosima::fastrtps::RELIABLE_RELIABILITY_QOS).
             history_kind(eprosima::fastrtps::KEEP_ALL_HISTORY_QOS).
             resource_limits_allocated_samples(2).
-            resource_limits_max_samples(2).init();
+            resource_limits_max_samples(2).
+            resource_limits_max_instances(1).
+            resource_limits_max_samples_per_instance(2).init();
 
     ASSERT_TRUE(reader.isInitialized());
 
@@ -195,7 +197,9 @@ TEST_P(NetworkConfig, PubSubOutLocatorSelection)
             resource_limits_allocated_samples(20).
             disable_builtin_transport().
             add_user_transport_to_pparams(descriptor_).
-            resource_limits_max_samples(20).init();
+            resource_limits_max_samples(20).
+            resource_limits_max_instances(2).
+            resource_limits_max_samples_per_instance(10).init();
 
 
     ASSERT_TRUE(writer.isInitialized());
