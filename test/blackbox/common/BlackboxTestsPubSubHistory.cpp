@@ -801,6 +801,7 @@ TEST_P(PubSubHistory, PubSubAsReliableKeepAllWithKeyAndInfiniteMaxInstances)
     ASSERT_TRUE(reader.isInitialized());
 
     writer.resource_limits_max_instances(0)
+            .resource_limits_max_samples(0)
             .history_kind(eprosima::fastrtps::KEEP_ALL_HISTORY_QOS)
             .reliability(eprosima::fastrtps::RELIABLE_RELIABILITY_QOS)
             .mem_policy(mem_policy_).init();
@@ -845,7 +846,7 @@ TEST_P(PubSubHistory, PubSubAsReliableKeepAllWithKeyAndMaxSamples)
     ASSERT_TRUE(reader.isInitialized());
 
     writer.resource_limits_max_instances(keys)
-            .resource_limits_max_samples(2)
+            .resource_limits_max_samples(4)
             .resource_limits_allocated_samples(2)
             .resource_limits_max_samples_per_instance(2)
             .history_kind(eprosima::fastrtps::KEEP_ALL_HISTORY_QOS)
@@ -889,6 +890,8 @@ TEST_P(PubSubHistory, PubSubAsReliableKeepAllWithoutKeyAndMaxSamples)
     ASSERT_TRUE(reader.isInitialized());
 
     writer.resource_limits_max_samples(2)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(2)
             .resource_limits_allocated_samples(2)
             .history_kind(eprosima::fastrtps::KEEP_ALL_HISTORY_QOS)
             .reliability(eprosima::fastrtps::RELIABLE_RELIABILITY_QOS)
@@ -1044,7 +1047,10 @@ TEST_P(PubSubHistory, ReliableTransientLocalKeepLast1)
             .history_kind(eprosima::fastrtps::KEEP_LAST_HISTORY_QOS)
             .history_depth(10)
             .resource_limits_allocated_samples(10)
-            .resource_limits_max_samples(10).mem_policy(mem_policy_).init();
+            .resource_limits_max_samples(10)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(10)
+            .mem_policy(mem_policy_).init();
 
     ASSERT_TRUE(writer.isInitialized());
 
@@ -1140,6 +1146,8 @@ TEST_P(PubSubHistory, WriterWithoutReadersTransientLocal)
             .reliability(RELIABLE_RELIABILITY_QOS)
             .resource_limits_allocated_samples(13)
             .resource_limits_max_samples(13)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(13)
             .mem_policy(mem_policy_).init();
 
     ASSERT_TRUE(writer.isInitialized());
@@ -1248,7 +1256,9 @@ TEST_P(PubSubHistory, KeepAllWriterContinueSendingAfterReaderMatched)
     writer.reliability(RELIABLE_RELIABILITY_QOS)
             .history_kind(eprosima::fastrtps::KEEP_ALL_HISTORY_QOS)
             .resource_limits_allocated_samples(1)
-            .resource_limits_max_samples(1);
+            .resource_limits_max_samples(1)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(1);
 
     writer.mem_policy(mem_policy_).init();
     ASSERT_TRUE(writer.isInitialized());
