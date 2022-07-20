@@ -635,11 +635,11 @@ std::pair<bool, DataReaderHistory::instance_info> DataReaderHistory::next_availa
 void DataReaderHistory::check_and_remove_instance(
         DataReaderHistory::instance_info& instance_info)
 {
-    DataReaderInstance* instance = instance_info.second.get();
+    DataReaderInstance* instance = instance_info->second.get();
     if (instance->cache_changes.empty() &&
             (InstanceStateKind::ALIVE_INSTANCE_STATE != instance->instance_state) &&
             instance->alive_writers.empty() &&
-            instance_info.first.isDefined())
+            instance_info->first.isDefined())
     {
         if ((InstanceStateKind::ALIVE_INSTANCE_STATE != instance_info->second->instance_state) &&
                 instance_info->first.isDefined())
@@ -783,9 +783,9 @@ bool DataReaderHistory::update_instance_nts(
 
     assert(vit != instances_.end());
     bool ret =
-            vit->second.update_state(change->kind, change->writerGUID, change->reader_info.writer_ownership_strength);
-    change->reader_info.disposed_generation_count = vit->second.disposed_generation_count;
-    change->reader_info.no_writers_generation_count = vit->second.no_writers_generation_count;
+            vit->second->update_state(change->kind, change->writerGUID, change->reader_info.writer_ownership_strength);
+    change->reader_info.disposed_generation_count = vit->second->disposed_generation_count;
+    change->reader_info.no_writers_generation_count = vit->second->no_writers_generation_count;
 
     return ret;
 }
@@ -803,9 +803,9 @@ void DataReaderHistory::writer_update_its_ownership_strength_nts(
         const GUID_t& writer_guid,
         const uint32_t ownership_strength)
 {
-    for (auto& instance : keyed_changes_)
+    for (auto& instance : instances_)
     {
-        instance.second.writer_update_its_ownership_strength(writer_guid, ownership_strength);
+        instance.second->writer_update_its_ownership_strength(writer_guid, ownership_strength);
     }
 }
 
