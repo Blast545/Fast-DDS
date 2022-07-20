@@ -152,6 +152,8 @@ TEST_P(Volatile, AsyncVolatileKeepAllPubReliableSubNonReliable300Kb)
             durability_kind(eprosima::fastrtps::VOLATILE_DURABILITY_QOS).
             resource_limits_allocated_samples(9).
             resource_limits_max_samples(9).
+            resource_limits_max_instances(1).
+            resource_limits_max_samples_per_instance(9).
             asynchronously(eprosima::fastrtps::ASYNCHRONOUS_PUBLISH_MODE).
             add_throughput_controller_descriptor_to_pparams(
         eprosima::fastdds::rtps::FlowControllerSchedulerPolicy::FIFO, bytesPerPeriod, periodInMs).
@@ -191,6 +193,8 @@ TEST_P(Volatile, VolatileKeepAllPubReliableSubNonReliableHelloWorld)
             durability_kind(eprosima::fastrtps::VOLATILE_DURABILITY_QOS).
             resource_limits_allocated_samples(9).
             resource_limits_max_samples(9).
+            resource_limits_max_instances(1).
+            resource_limits_max_samples_per_instance(9).
             init();
 
     ASSERT_TRUE(writer.isInitialized());
@@ -227,6 +231,8 @@ TEST_P(Volatile, AsyncVolatileKeepAllPubReliableSubNonReliableHelloWorld)
             durability_kind(eprosima::fastrtps::VOLATILE_DURABILITY_QOS).
             resource_limits_allocated_samples(9).
             resource_limits_max_samples(9).
+            resource_limits_max_instances(1).
+            resource_limits_max_samples_per_instance(9).
             asynchronously(eprosima::fastrtps::ASYNCHRONOUS_PUBLISH_MODE).
             init();
 
@@ -270,6 +276,8 @@ TEST_P(Volatile, AsyncVolatileSubBetweenPubs)
             durability_kind(eprosima::fastrtps::VOLATILE_DURABILITY_QOS).
             resource_limits_allocated_samples(9).
             resource_limits_max_samples(9).
+            resource_limits_max_instances(1).
+            resource_limits_max_samples_per_instance(9).
             asynchronously(eprosima::fastrtps::ASYNCHRONOUS_PUBLISH_MODE).
             heartbeat_period_seconds(3600).
             init();
@@ -312,6 +320,8 @@ TEST_P(Volatile, VolatileSubBetweenPubs)
             durability_kind(eprosima::fastrtps::VOLATILE_DURABILITY_QOS).
             resource_limits_allocated_samples(9).
             resource_limits_max_samples(9).
+            resource_limits_max_instances(1).
+            resource_limits_max_samples_per_instance(9).
             asynchronously(eprosima::fastrtps::SYNCHRONOUS_PUBLISH_MODE).
             heartbeat_period_seconds(3600).
             init();
@@ -355,6 +365,8 @@ TEST_P(Volatile, AsyncVolatileSubBetweenTransientPubs)
             .durability_kind(eprosima::fastrtps::TRANSIENT_LOCAL_DURABILITY_QOS)
             .resource_limits_allocated_samples(9)
             .resource_limits_max_samples(9)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(9)
             .asynchronously(eprosima::fastrtps::ASYNCHRONOUS_PUBLISH_MODE)
             .heartbeat_period_seconds(3600)
             .init();
@@ -398,6 +410,8 @@ TEST_P(Volatile, VolatileSubBetweenTransientPubs)
             .durability_kind(eprosima::fastrtps::TRANSIENT_LOCAL_DURABILITY_QOS)
             .resource_limits_allocated_samples(9)
             .resource_limits_max_samples(9)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(9)
             .asynchronously(eprosima::fastrtps::SYNCHRONOUS_PUBLISH_MODE)
             .heartbeat_period_seconds(3600)
             .init();
@@ -464,6 +478,8 @@ TEST_P(Volatile, VolatileLateJoinerSubGapLost)
             durability_kind(eprosima::fastrtps::VOLATILE_DURABILITY_QOS).
             resource_limits_allocated_samples(9).
             resource_limits_max_samples(9).
+            resource_limits_max_instances(1).
+            resource_limits_max_samples_per_instance(9).
             disable_builtin_transport().
             add_user_transport_to_pparams(testTransport).
             asynchronously(eprosima::fastrtps::SYNCHRONOUS_PUBLISH_MODE).
@@ -514,6 +530,8 @@ TEST_P(Volatile, VolatileWithLostAcks)
             durability_kind(eprosima::fastrtps::VOLATILE_DURABILITY_QOS).
             resource_limits_allocated_samples(10).
             resource_limits_max_samples(10).
+            resource_limits_max_instances(1).
+            resource_limits_max_samples_per_instance(10).
             init();
 
     ASSERT_TRUE(writer.isInitialized());
@@ -536,6 +554,8 @@ TEST_P(Volatile, VolatileWithLostAcks)
             durability_kind(eprosima::fastrtps::VOLATILE_DURABILITY_QOS).
             resource_limits_allocated_samples(10).
             resource_limits_max_samples(10).
+            resource_limits_max_instances(1).
+            resource_limits_max_samples_per_instance(10).
             disable_builtin_transport().
             add_user_transport_to_pparams(testTransport).
             init();

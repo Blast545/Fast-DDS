@@ -2505,7 +2505,10 @@ TEST_P(Security, BuiltinAuthenticationAndCryptoPlugin_reliable_all_data300kb_mix
     pub_property_policy.properties().emplace_back("rtps.endpoint.submessage_protection_kind", "ENCRYPT");
     pub_property_policy.properties().emplace_back("rtps.endpoint.payload_protection_kind", "ENCRYPT");
 
-    writer.history_depth(2).resource_limits_max_samples(2).resource_limits_allocated_samples(2).
+    writer.history_depth(2).resource_limits_max_samples(2).
+            resource_limits_max_instances(1).
+            resource_limits_max_samples_per_instance(2).
+            resource_limits_allocated_samples(2).
             asynchronously(eprosima::fastrtps::ASYNCHRONOUS_PUBLISH_MODE).
             property_policy(pub_part_property_policy).
             entity_property_policy(pub_property_policy).init();
