@@ -80,7 +80,8 @@ ReturnCode_t TopicImpl::check_qos(
         }
     }
     if ((qos.resource_limits().max_samples > 0) &&
-            (qos.resource_limits().max_samples <= (qos.resource_limits().max_instances * qos.resource_limits().max_samples_per_instance)))
+            (qos.resource_limits().max_samples <=
+            (qos.resource_limits().max_instances * qos.resource_limits().max_samples_per_instance)))
     {
         logError(DDS_QOS_CHECK, "max_samples should be greater than max_instances * max_samples_per_instance");
         return ReturnCode_t::RETCODE_INCONSISTENT_POLICY;
