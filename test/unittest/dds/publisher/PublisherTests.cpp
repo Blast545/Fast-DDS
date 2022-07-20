@@ -226,7 +226,7 @@ TEST(PublisherTests, ChangeDefaultDataWriterQos)
     qos.history().kind = eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS;
     qos.history().depth = 1000;
     // .resource_limits
-    qos.resource_limits().max_samples = 3000;
+    qos.resource_limits().max_samples = 50000;
     qos.resource_limits().max_instances = 100;
     qos.resource_limits().max_samples_per_instance = 500;
     qos.resource_limits().allocated_samples = 50;
@@ -317,7 +317,7 @@ TEST(PublisherTests, ChangeDefaultDataWriterQos)
     EXPECT_EQ(eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS, wqos.history().kind);
     EXPECT_EQ(1000, wqos.history().depth);
     // .resource_limits
-    EXPECT_EQ(3000, wqos.resource_limits().max_samples);
+    EXPECT_EQ(50000, wqos.resource_limits().max_samples);
     EXPECT_EQ(100, wqos.resource_limits().max_instances);
     EXPECT_EQ(500, wqos.resource_limits().max_samples_per_instance);
     EXPECT_EQ(50, wqos.resource_limits().allocated_samples);
