@@ -1657,7 +1657,9 @@ TEST(DDSStatus, sample_rejected_nokey_re_dw_re_dr_keep_all_max_samples_2)
 
     writer.history_kind(eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS);
     reader.history_kind(eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS)
-            .resource_limits_max_samples(2);
+            .resource_limits_max_samples(2)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(2);
 
     sample_rejected_test_init(reader, writer, [&test_mtx, &test_status](
                 const eprosima::fastdds::dds::SampleRejectedStatus& status)
@@ -1700,7 +1702,9 @@ TEST(DDSStatus, sample_rejected_key_re_dw_re_dr_keep_all_max_samples_2)
 
     writer.history_kind(eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS);
     reader.history_kind(eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS)
-            .resource_limits_max_samples(2);
+            .resource_limits_max_samples(2)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(2);
 
     sample_rejected_test_dw_init(writer);
 
@@ -1752,7 +1756,9 @@ TEST(DDSStatus, sample_rejected_nokey_large_re_dw_re_dr_keep_all_max_samples_2)
             .add_throughput_controller_descriptor_to_pparams( // Avoid losing more frangments
         eprosima::fastdds::rtps::FlowControllerSchedulerPolicy::FIFO, 132000, 50);
     reader.history_kind(eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS)
-            .resource_limits_max_samples(2);
+            .resource_limits_max_samples(2)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(2);
 
     sample_rejected_test_init(reader, writer, [&test_mtx, &test_status](
                 const eprosima::fastdds::dds::SampleRejectedStatus& status)
@@ -1798,7 +1804,9 @@ TEST(DDSStatus, sample_rejected_key_large_re_dw_re_dr_keep_all_max_samples_2)
             .add_throughput_controller_descriptor_to_pparams( // Avoid losing more frangments
         eprosima::fastdds::rtps::FlowControllerSchedulerPolicy::FIFO, 132000, 50);
     reader.history_kind(eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS)
-            .resource_limits_max_samples(2);
+            .resource_limits_max_samples(2)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(2);
 
     sample_rejected_test_dw_init(writer);
 
@@ -1847,7 +1855,9 @@ TEST(DDSStatus, sample_rejected_nokey_re_dw_re_dr_keep_last_max_samples_2)
 
     writer.history_kind(eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS);
     reader.history_kind(eprosima::fastdds::dds::KEEP_LAST_HISTORY_QOS)
-            .resource_limits_max_samples(2);
+            .resource_limits_max_samples(2)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(2);
 
     sample_rejected_test_init(reader, writer, [&test_mtx, &test_status](
                 const eprosima::fastdds::dds::SampleRejectedStatus& status)
@@ -1890,7 +1900,9 @@ TEST(DDSStatus, sample_rejected_key_re_dw_re_dr_keep_last_max_samples_2)
 
     writer.history_kind(eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS);
     reader.history_kind(eprosima::fastdds::dds::KEEP_LAST_HISTORY_QOS)
-            .resource_limits_max_samples(2);
+            .resource_limits_max_samples(2)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(2);
 
     sample_rejected_test_dw_init(writer);
 
@@ -1942,7 +1954,9 @@ TEST(DDSStatus, sample_rejected_nokey_large_re_dw_re_dr_keep_last_max_samples_2)
             .add_throughput_controller_descriptor_to_pparams( // Avoid losing more frangments
         eprosima::fastdds::rtps::FlowControllerSchedulerPolicy::FIFO, 132000, 50);
     reader.history_kind(eprosima::fastdds::dds::KEEP_LAST_HISTORY_QOS)
-            .resource_limits_max_samples(2);
+            .resource_limits_max_samples(2)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(2);
 
     sample_rejected_test_init(reader, writer, [&test_mtx, &test_status](
                 const eprosima::fastdds::dds::SampleRejectedStatus& status)
@@ -1988,7 +2002,9 @@ TEST(DDSStatus, sample_rejected_key_large_re_dw_re_dr_keep_last_max_samples_2)
             .add_throughput_controller_descriptor_to_pparams( // Avoid losing more frangments
         eprosima::fastdds::rtps::FlowControllerSchedulerPolicy::FIFO, 132000, 50);
     reader.history_kind(eprosima::fastdds::dds::KEEP_LAST_HISTORY_QOS)
-            .resource_limits_max_samples(2);
+            .resource_limits_max_samples(2)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(2);
 
     sample_rejected_test_dw_init(writer);
 
@@ -2814,6 +2830,8 @@ TEST(DDSStatus, sample_rejected_waitset)
     reader.history_kind(eprosima::fastdds::dds::KEEP_ALL_HISTORY_QOS)
             .reliability(eprosima::fastrtps::RELIABLE_RELIABILITY_QOS)
             .resource_limits_max_samples(1)
+            .resource_limits_max_instances(1)
+            .resource_limits_max_samples_per_instance(1)
             .sample_rejected_status_functor([&test_mtx, &test_status](
                 const eprosima::fastdds::dds::SampleRejectedStatus& status)
             {
