@@ -1089,48 +1089,51 @@ bool StatefulReader::change_received(
 void StatefulReader::NotifyChanges(
         WriterProxy* prox)
 {
+    CacheChange_t* aux_ch = nullptr;
     GUID_t proxGUID = prox->guid();
     SequenceNumber_t max_seq = prox->available_changes_max();
-    update_last_notified(proxGUID, max_seq);
-    SequenceNumber_t nextChangeToNotify = prox->next_cache_change_to_be_notified();
+    SequenceNumber_t first_seq = prox->next_cache_change_to_be_notified();
 
+    bool new_data_available = false;
+
+    // Update state before notifying
+    update_last_notified(proxGUID, max_seq);
+    auto it = mp_history->get_change_nts(first_seq, proxGUID, &aux_ch, mp_history->changesBegin());
+    while (it != mp_history->changesEnd() && (*it)->sequenceNumber <= max_seq)
+    {
+        new_data_available = true;
+        aux_ch = *it;
+        if (!aux_ch->isRead)
+        {
+            ++total_unread_;
+            on_data_notify(proxGUID, aux_ch->sourceTimestamp);
+        }
+
+        ++it;
+        SequenceNumber_t next_seq = prox->next_cache_change_to_be_notified();
+        it = mp_history->get_change_nts(next_seq, proxGUID, &aux_ch, it);
+    }
+
+    // Notify listener if new data is available
     auto listener = getListener();
-    bool notify_individual = false;
-    bool new_data_available = (nextChangeToNotify != SequenceNumber_t::unknown()) &&
-            (max_seq >= nextChangeToNotify);
     if (new_data_available && (nullptr != listener))
     {
-        listener->on_data_available(this, proxGUID, nextChangeToNotify, max_seq, notify_individual);
-    }
+        bool notify_individual = false;
+        listener->on_data_available(this, proxGUID, first_seq, max_seq, notify_individual);
 
-    while (nextChangeToNotify != SequenceNumber_t::unknown())
-    {
-        CacheChange_t* ch_to_give = nullptr;
-
-        if (mp_history->get_change(nextChangeToNotify, proxGUID, &ch_to_give))
+        if (notify_individual)
         {
-            if (!ch_to_give->isRead)
+            it = mp_history->get_change_nts(first_seq, proxGUID, &aux_ch, mp_history->changesBegin());
+            while (it != mp_history->changesEnd() && (*it)->sequenceNumber <= max_seq)
             {
-                ++total_unread_;
-
-                on_data_notify(ch_to_give->writerGUID, ch_to_give->sourceTimestamp);
-
-                if (notify_individual && (nullptr != listener))
-                {
-                    listener->onNewCacheChangeAdded((RTPSReader*)this, ch_to_give);
-                }
+                SequenceNumber_t next_seq = (*it)->sequenceNumber + 1;
+                listener->onNewCacheChangeAdded(this, *it);
+                it = mp_history->get_change_nts(next_seq, proxGUID, &aux_ch, it);
             }
         }
-
-        // Search again the WriterProxy because could be removed after the unlock.
-        if (!findWriterProxy(proxGUID, &prox))
-        {
-            break;
-        }
-
-        nextChangeToNotify = prox->next_cache_change_to_be_notified();
     }
 
+    // Notify in case someone is waiting for unread messages
     if (new_data_available)
     {
         new_notification_cv_.notify_all();
